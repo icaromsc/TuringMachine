@@ -40,6 +40,7 @@ class TuringMachine(object):
         self.__head_position = 0
         self.__blank_symbol = blank_symbol
         self.__current_state = initial_state
+        self.count = 0
         if transition_function == None:
             self.__transition_function = {}
         else:
@@ -53,6 +54,7 @@ class TuringMachine(object):
         return str(self.__tape)
 
     def step(self):
+
         char_under_head = self.__tape[self.__head_position]
         print ("char under head:",char_under_head)
         x = (self.__current_state, char_under_head)
@@ -70,7 +72,13 @@ class TuringMachine(object):
                 self.__head_position -= 1
                 print ("head position moves to L")
             self.__current_state = y[0]
-            return self.__current_state
+        else:
+            self.count += 1
+
+        if self.count>10000:
+            return False
+        else:
+            return True
 
     def final(self):
         if self.__current_state in self.__final_states:
@@ -81,22 +89,39 @@ class TuringMachine(object):
 
 
 def montar_TM():
-    simbolos = raw_input("simbolos:")
-    answers = simbolos.split(' ')
+    r = input("simbolos:")
+    simbolos = r.split(' ')
+    print ("simbolos definidos: ",simbolos)
 
-    print answers
+    r = input("defina os estados possiveis:")
+    estados = r.split(' ')
+    print("estados definidos: ", estados)
+
+    ocorrencias= simbolos + ["¬"]
+    tdict={}
+    print("informe as transações de estados para " , ocorrencias )
+    for est in estados:
+        for o in ocorrencias:
+            print("informe as transações de estados para ", o)
+            msg = "estado " + est + ": "
+            r = input(msg)
+            value= r.split(' ')
+            tdict[(est,o)]=r
+    print("função transição montada:",tdict)
 
 
 
 
 
-montar_TM()
+
+
+#montar_TM()
 
 initial_state = "init",
 accepting_states = ["final"],
-transition_function = transactions.changeLetters
+transition_function = transactions.uppercase
 final_states = {"final"}
-alpha = raw_input('alfabeto:')
+alpha = input('DIGITE A SENTENÇA:')
 #"010011 "
 t = TuringMachine(alpha,
                   initial_state = "init",
@@ -105,14 +130,22 @@ t = TuringMachine(alpha,
 
 print("Input on Tape:\n" + t.get_tape())
 
-
-print (t.get_tape())
+aceita=True
 while not t.final():
     s=t.step()
-    print 'current sate:',s
+    if(s):
+        continue
+    else:
+        aceita=False
+        break
 
-print("Result of the Turing machine calculation:")
-print(t.get_tape())
+if aceita:
+    print("\n*******\n*******\n************* SENTENÇA ACEITADA *************\n*****\n******\n", aceita)
+    print("Result of the Turing machine calculation:")
+    print(t.get_tape())
+else:
+    print("\n*******\n*******\n************* SENTENÇA REJEITADA *************\n*****\n******\n")
+
 
 
 # consult:

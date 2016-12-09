@@ -3,8 +3,8 @@ changeLetters={("init","a"):("init", "b", "R"),
                        ("init"," "):("final"," ", "N"),
                        }
 
-changeLetters2={("init","a"):("init", "b", "R"),
-                       ("init","b"):("init", "a", "R"),
+uppercase={("init","a"):("init", "A", "R"),
+                       ("init","b"):("init", "B", "R"),
                        ("init"," "):("final"," ", "N"),
                        }
 
